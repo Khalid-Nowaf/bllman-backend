@@ -1,7 +1,7 @@
 language: node_js
 
 env:
-  - CXX=g++-4.8 TEST_DIR='app/UMS'
+  - CXX=g++-4.8 TEST_DIR='.'
 
 node_js:
   - "6"
