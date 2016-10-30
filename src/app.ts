@@ -1,8 +1,10 @@
 import * as express     from 'express';
 import * as path        from 'path';
-import * as logger      from 'morgan';
 import * as bodyParser  from 'body-parser';
 import * as index from './routes/index';
+import Config from './config';
+
+
 
 
 /**
@@ -10,9 +12,11 @@ import * as index from './routes/index';
  */
 class Server {
     public app: express.Application;
+    public Config: Config;
 
     constructor() {
         this.app = express();
+        this.Config = new Config(this.app.get('env'));
         this.config();
         this.errorHandlers();
         this.routes();
@@ -21,7 +25,7 @@ class Server {
     private config() {
         // basic config
         // this.app.use( logger('combined', {skip: function(req, res){ return true; }}));
-        // this.app.use( logger('dev'));
+        this.app.use(this.Config.LOGGER);
         this.app.use( bodyParser.json());
         this.app.use( bodyParser.urlencoded({ extended: true}));
     }

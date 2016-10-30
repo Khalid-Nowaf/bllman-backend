@@ -2,14 +2,17 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var index = require('./routes/index');
+var config_1 = require('./config');
 var Server = (function () {
     function Server() {
         this.app = express();
+        this.Config = new config_1.default(this.app.get('env'));
         this.config();
         this.errorHandlers();
         this.routes();
     }
     Server.prototype.config = function () {
+        this.app.use(this.Config.LOGGER);
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
     };

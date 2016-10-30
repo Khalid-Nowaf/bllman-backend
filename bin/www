@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app.js');
+var app = require('../dest/app.js');
 var debug = require('debug')('bllman-backend:server');
 var http = require('http');
 
