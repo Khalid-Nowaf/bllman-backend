@@ -47,9 +47,11 @@ module.exports = function(grunt) {
           logConcurrentOutput: true
         }
       }
-    }
+    },
+    clean: ["dest/"]
   });
 
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks("grunt-concurrent");
   grunt.loadNpmTasks("grunt-nodemon");
   grunt.loadNpmTasks("grunt-newer");
@@ -58,6 +60,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-tslint");
 
   grunt.registerTask("default", [
+    "clean",
     "ts",
     "tslint",
   ]);
@@ -67,7 +70,5 @@ module.exports = function(grunt) {
     "tslint"
   ]);
 
-  grunt.registerTask("serve", ["concurrent:watchers"]);
-  
-
+  grunt.registerTask("serve", ["concurrent:watchers"]); 
 };
