@@ -8,6 +8,7 @@ export default class Config {
      PORT: string;
      DEBUG: string;
      LOGGER: any;
+     DB: string;
 
     constructor(ENV: string) {
 
@@ -21,6 +22,7 @@ export default class Config {
                 this.PORT = '3000';
                 this.DEBUG = 'DEBUG=test:*';
                 this.LOGGER = logger('combined', { skip: function (req, res) { return true; } });
+                 this.DB = 'mongodb://localhost/ballman';
                 break;
             default:
                 process.env.NODE_ENV = 'development';
@@ -29,6 +31,7 @@ export default class Config {
                 this.LOGGER = logger('dev');
                 break;
       }
+      this.DB = 'mongodb://localhost/ballman';
       process.env.DEBUG = this.DEBUG;
       process.env.PORT = this.PORT;
 

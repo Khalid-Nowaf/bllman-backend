@@ -1,7 +1,11 @@
+// Dependancies
 import * as express     from 'express';
 import * as path        from 'path';
 import * as bodyParser  from 'body-parser';
+import * as mongoose    from 'mongoose';
+// The router Index
 import * as index from './routes/index';
+// Configuration file
 import Config from './config';
 
 
@@ -13,17 +17,18 @@ import Config from './config';
 class Server {
     public app: express.Application;
     public Config: Config;
-
+    public DB: mongoose.Mongoose;
     constructor() {
         this.app = express();
-        this.Config = new Config(this.app.get('env'));
         this.config();
+        this.DBConn();
         this.errorHandlers();
         this.routes();
     }
 
     private config() {
         // basic config
+        this.Config = new Config(this.app.get('env'));
         // this.app.use( logger('combined', {skip: function(req, res){ return true; }}));
         this.app.use(this.Config.LOGGER);
         this.app.use( bodyParser.json());
@@ -33,6 +38,14 @@ class Server {
     // mount all routes 
     private routes() {
         this.app.use(index.default.mountAll());
+    }
+
+    private DBConn() {
+        this.DB = mongoose;
+        this.DB.Promise = global.Promise;
+        mongoose.connect(this.Config.DB)
+        .then( () => { console.log('DB connected'); })
+        .catch((e) => { console.log('DB NOT CONNECTED !!!'); });
     }
 
     private errorHandlers() {

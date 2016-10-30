@@ -20,6 +20,7 @@ var Config = (function () {
                 this.LOGGER = logger('dev');
                 break;
         }
+        this.db = 'mongodb://localhost/jwtapi',
         console.log(process.env.DEBUG = this.DEBUG);
         console.log(process.env.PORT = this.PORT);
     }

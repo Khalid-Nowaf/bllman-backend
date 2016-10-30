@@ -5,9 +5,10 @@ module.exports = function(grunt) {
     ts: {
       app: {
         files: [{
-          src: ["./src/**/*.ts", "!src/**/*.baseDir.ts", "!src/_all.d.ts"],
+          src: ["./src/**/*.ts","./src/**/*.js", "!src/**/*.baseDir.ts", "!src/_all.d.ts"],
           dest: "./dest",
-          fast:false
+          fast:'never',
+          allowJs: true
         }],
         //tsconfig: true
       }
@@ -22,7 +23,7 @@ module.exports = function(grunt) {
     },
     watch: {
       ts: {
-        files: ["./src/**/*.ts"],
+        files: ["./src/**/*.ts","./src/**/*.js", "!src/**/*.baseDir.ts", "!src/_all.d.ts"],
         tasks: [ "newer:tslint","ts"]
       }
     },
@@ -34,7 +35,8 @@ module.exports = function(grunt) {
         options: {
             ignore: ['node_modules/**', 'Gruntfile.js'],
             env: {
-                PORT: '8181'
+                PORT: '8181',
+                ENV_NODE: 'development'
             }
         }
     },
