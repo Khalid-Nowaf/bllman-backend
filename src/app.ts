@@ -3,6 +3,7 @@ import * as express     from 'express';
 import * as path        from 'path';
 import * as bodyParser  from 'body-parser';
 import * as mongoose    from 'mongoose';
+import  * as _          from 'lodash';
 // The router Index
 import * as index from './routes/index';
 // Configuration file
@@ -22,8 +23,10 @@ class Server {
         this.app = express();
         this.config();
         this.DBConn();
-        this.errorHandlers();
         this.routes();
+        this.ClienterrorHandlers();
+        this.errorHandlers();
+
     }
 
     private config() {
@@ -48,13 +51,25 @@ class Server {
         .catch((e) => { console.log('DB NOT CONNECTED !!!'); });
     }
 
-    private errorHandlers() {
-        // basic error handling
+    private ClienterrorHandlers() {
+        // Client error handling
         this.app.use(function (err: any, req, res, next) {
-            let error = new Error('Not Found');
-            err.status = 404;
-            next(err);
+            if ( _.startsWith(err.toString()), 'ValidationError:') {
+               try {
+                    let error = _.trim(err.toString(), 'ValidationError:');
+                    error = JSON.parse(error);
+                    res.status(400).send(error);
+               }catch (e) {
+                    console.log(e);
+                    res.status(500).send(e);
+               };
+            } else next(err);
         });
+    }
+
+    private errorHandlers() {
+
+
         // development error handler
         // will print stacktrace
         if (this.app.get('env') === 'development') {
@@ -65,16 +80,17 @@ class Server {
                     error: err
                 });
             });
-        }
-        // production error handler
-        // no stacktraces leaked to user
-        this.app.use(function (err: any, req, res, next) {
-            res.status(err.status || 500);
-            res.render({
-                message: err.message,
-                error: {}
+        } else {
+            // production error handler
+            // no stacktraces leaked to user
+            this.app.use(function (err: any, req, res, next) {
+                res.status(err.status || 500);
+                res.render({
+                    message: err.message,
+                    error: {}
+                });
             });
-        });
+        }
     }
 
 }
