@@ -1,50 +1,77 @@
 import * as  mongoose from 'mongoose';
+import ErrorB from '../util/ErrorB';
 let bcrypt = require('bcrypt');
 let Schema = mongoose.Schema;
+let validate = require('mongoose-validator');
+let beautifyUnique = require('mongoose-beautiful-unique-validation');
 
-
+/**
+ * @interface IUserModel
+ */
 interface IUserModel extends mongoose.Document {
-  phone: Number;
-  password: String;
-  email: String;
-  Code: Number;
-  Type: String;
+  phone: string;
+  password: string;
+  email: string;
+  Code: number;
+  u_type: string;
   veri: number;
 }
-// Schema defines how the user data will be stored in MongoDB
+
+/**
+ * Validation
+ *  SA Mobile Number
+ */
+let SA_Number = [validate({
+    validator: 'matches',
+    arguments:  /^(!?(\+?966)|0)?5\d{8}$/,
+    message: ErrorB.PHONE_INVALID
+})];
+
+/**
+ * @Schema UserSchema
+ */
 let UserSchema = new Schema({
   phone: {
-    type: Number,
-    unique: true,
-    required: true
+    type: String,
+    unique: ErrorB.PHONE_EXIST,
+    required: ErrorB.PHONE_MISSING,
+    validate: SA_Number
   },
   password: {
     type: String,
-    required: true
+    required: ErrorB.PHONE_MISSING,
   },
   email: { // TODO: need validation !!
     type: String,
     lowercase: true,
-    unique: true,
-    required: true
+    unique: ErrorB.EMAIL_EXIST,
+    required: ErrorB.EMAIL_MISSING
   },
   code: {
     type: Number,
     default: 0
   },
-  // tpye: {
-  //     tpye: String,
-  //     required: true,
-  //     enum: ['admin', 'cus', 'driver'],
-  //     default: 'cus'
-  // },
+  u_type: {
+      type: String,
+      required: true,
+      enum: ['admin', 'cus', 'driver'],
+      default: 'cus'
+  },
   veri: {
     type: Boolean,
     default: false
   }
 });
 
-// Hash the user's password before inserting a new user
+/**
+ * mongoose does not support unique validation
+ * thus we use this plugin
+ */
+UserSchema.plugin(beautifyUnique);
+
+/**
+ * Pre Save function
+ */
 UserSchema.pre('save', function(next) {
   let user = this;
   if (this.isModified('password') || this.isNew) {
@@ -65,7 +92,9 @@ UserSchema.pre('save', function(next) {
   }
 });
 
-// Compare password input to password saved in database
+/**
+ * @function comparePassword
+ */
 UserSchema.methods.comparePassword = function(pw, cb) {
   bcrypt.compare(pw, this.password, function(err, isMatch) {
     if (err) {
