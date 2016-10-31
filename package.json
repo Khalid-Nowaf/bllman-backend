@@ -13,6 +13,7 @@
     "@types/bcrypt": "0.0.30",
     "@types/body-parser": "0.0.33",
     "@types/es6-promise": "0.0.32",
+    "@types/lodash": "^4.14.37",
     "@types/mongoose": "^4.5.39",
     "@types/morgan": "^1.7.32",
     "@types/superagent": "^2.0.35",
@@ -21,7 +22,10 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "express": "~4.13.4",
+    "lodash": "^4.16.5",
     "mongoose": "^4.6.5",
+    "mongoose-beautiful-unique-validation": "^5.1.1",
+    "mongoose-validator": "^1.2.5",
     "morgan": "~1.7.0"
   },
   "devDependencies": {

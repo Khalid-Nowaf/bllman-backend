@@ -8,7 +8,8 @@ module.exports = function(grunt) {
           src: ["./src/**/*.ts","./src/**/*.js", "!src/**/*.baseDir.ts", "!src/_all.d.ts"],
           dest: "./dest",
           fast:'never',
-          allowJs: true
+          allowJs: true,
+          sourceMap: true,
         }],
         //tsconfig: true
       }
