@@ -10,8 +10,6 @@ import * as index from './routes/index';
 import Config from './config';
 
 
-
-
 /**
  * Server
  */
@@ -56,12 +54,15 @@ class Server {
         this.app.use(function (err: any, req, res, next) {
             if ( _.startsWith(err.toString()), 'ValidationError:') {
                try {
-                    let error = _.trim(err.toString(), 'ValidationError:');
-                    error = JSON.parse(error);
-                    res.status(400).send(error);
+                   // extract the json errors
+                    let errors = _.split( _.trim(err.toString(), 'ValidationError:'), ', ');
+                    errors.forEach((v, k) => { errors[k] = JSON.parse(v); });
+                   // console.log(errors);
+
+                    res.status(400).send({errors: errors});
                }catch (e) {
-                    console.log(e);
-                    res.status(500).send(e);
+                    console.log(err.toString());
+                    res.status(400).send(err.toString());
                };
             } else next(err);
         });
