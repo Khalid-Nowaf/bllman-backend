@@ -1,22 +1,26 @@
 import  Router from './router';
+import * as User from '../controllers/userController';
+import * as exprees from 'express';
 /**
  * Home
  */
 export default class Users extends Router {
 
-   getHomePage() {
+   signup() {
      return function(req, res, next){
-       // let notImp = new Error('Not Implimented ...');
-       // next(notImp);
-       res.send('Not Impemented ');
+       User.default.create(req.body.phone, req.body.email, req.body.password)
+       .then((user) => {
+         res.send(user);
+       })
+       .catch((err) => {next(err); }); // pass the error to next route
     };
    };
 
   RootPath() {
-     return '/users';
+     return '/user';
   }
    mountRoutes() {
-    this.route('get', this.getHomePage());
+    this.route('post', this.signup());
    };
 }
 

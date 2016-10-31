@@ -41,7 +41,7 @@ import * as express from 'express';
           case 'post': break;
           case 'delete': break;
           case 'update': break;
-          default: new Error('invalid req method');
+          default: throw new Error('invalid req method'); // not sure who this will be handled 
         }
         this.router[_method](this.RootPath(), handller);
       }
