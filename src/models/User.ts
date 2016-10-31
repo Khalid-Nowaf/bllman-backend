@@ -19,15 +19,27 @@ interface IUserModel extends mongoose.Document {
 
 /**
  * Validation
- *  SA Mobile Number
  */
+//  SA Mobile Number
 let SA_Number = [validate({
     validator: 'matches',
     arguments:  /^(!?(\+?966)|0)?5\d{8}$/,
     message: ErrorB.PHONE_INVALID
 })];
+// email
+let valid_email = [validate({
+    validator: 'isEmail',
+    message: ErrorB.EMAIL_INVALID
+})];
+// password
+let valid_password = [validate({
+    validator: 'matches',
+    arguments: /^(?=.*\d)(?=.*[a-zA-Z])(?!.*[\W_\x7B-\xFF]).{6,15}$/,
+    message: ErrorB.PASSWORD_INVALID
+})];
 
-/**
+
+/** 
  * @Schema UserSchema
  */
 let UserSchema = new Schema({
@@ -39,13 +51,15 @@ let UserSchema = new Schema({
   },
   password: {
     type: String,
-    required: ErrorB.PHONE_MISSING,
+    required: ErrorB.PASSWORD_MISSING,
+    validate: valid_password
   },
   email: { // TODO: need validation !!
     type: String,
     lowercase: true,
     unique: ErrorB.EMAIL_EXIST,
-    required: ErrorB.EMAIL_MISSING
+    required: ErrorB.EMAIL_MISSING,
+    validate: valid_email
   },
   code: {
     type: Number,
