@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "grunt": "./node_modules/.bin/grunt",
-    "test": "npm run grunt && DEBUG= ./node_modules/.bin/mocha './dest/test/**/*.spec.js' --reporter spec -r './bin/www'",
+    "test": "npm run grunt && DEBUG=  nyc ./node_modules/.bin/mocha './dest/test/**/*.spec.js' --reporter spec -r './bin/www'",
     "cover": "npm run grunt && ./node_modules/.bin/istanbul cover _mocha  './dest/test/**/*.spec.js' --reporter -r './bin/www'",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
@@ -47,6 +47,7 @@
     "istanbul": "^0.4.5",
     "mocha": "^3.1.2",
     "nodemon": "^1.11.0",
+    "nyc": "^8.3.2",
     "supertest": "^2.0.1",
     "tslint": "^3.15.1",
     "typescript": "^2.0.6"
