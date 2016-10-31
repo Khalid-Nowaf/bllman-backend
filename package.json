@@ -7,7 +7,7 @@
     "grunt": "./node_modules/.bin/grunt",
     "test": "npm run grunt && DEBUG=  nyc ./node_modules/.bin/mocha './dest/test/**/*.spec.js' --reporter spec -r './bin/www'",
     "cover": "npm run grunt && ./node_modules/.bin/istanbul cover _mocha  './dest/test/**/*.spec.js' --reporter -r './bin/www'",
-    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
+    "coveralls": "nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls"
   },
   "dependencies": {
     "@types/bcrypt": "0.0.30",
@@ -20,13 +20,15 @@
     "bcrypt": "^0.8.7",
     "body-parser": "~1.15.1",
     "cookie-parser": "~1.4.3",
+    "coveralls": "^2.11.14",
     "debug": "~2.2.0",
     "express": "~4.13.4",
     "lodash": "^4.16.5",
     "mongoose": "^4.6.5",
     "mongoose-beautiful-unique-validation": "^5.1.1",
     "mongoose-validator": "^1.2.5",
-    "morgan": "~1.7.0"
+    "morgan": "~1.7.0",
+    "nyc": "^8.3.2"
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",
