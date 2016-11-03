@@ -4,9 +4,13 @@ import User from '../models/User';
  * UserController
  */
 export class UserController {
+
     /**
-     * create method: to create new user
-     * TODO: validation 
+     * @param  {string} phone
+     * @param  {string} email
+     * @param  {string} password
+     * @param  {string='cus'} type
+     * @returns Promise
      */
     public static create(phone: string, email: string, password: string, type: string = 'cus'): Promise<any> {
         return new Promise((resolve, reject) => {
@@ -25,7 +29,10 @@ export class UserController {
             });
         });
     }
-
+    /**
+     * @param  {string} phone
+     * @returns Promise
+     */
     public static delete(phone: string): Promise<any> {
         return new Promise((resolve, reject) => {
             User.findOneAndRemove({phone: phone}, (err, user) => {

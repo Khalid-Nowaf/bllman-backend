@@ -26,6 +26,9 @@ import Users from './users';
       this.route('get', this.getHomePage());
    };
 
+   /**
+    * @returns Array
+    */
    public static mountAll(): Array<express.Router> {
      return [
        new Index().router,

@@ -21,6 +21,7 @@ import * as express from 'express';
       /**
        * should return the root path for the all routes
        * e.g '/users' so the routes will be mounted to it
+       * @returns string
        */
       abstract RootPath(): string;
       /**
@@ -29,10 +30,10 @@ import * as express from 'express';
        */
       abstract mountRoutes();
 
-
-
-
-
+      /**
+       * @param  {string} method
+       * @param  {express.RequestHandler} handller
+       */
       route(method: string, handller: express.RequestHandler) {
         let _method = method.toLowerCase();
 
